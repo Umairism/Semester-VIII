@@ -1,30 +1,31 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:gesture/main.dart';
+import 'package:proj2/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('GestureDetector example smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const GestureDetectorExample());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify initial text is present.
+    expect(find.text('Halalala Tu chuti kr'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Single tap and wait for double-tap timeout (300ms)
+    await tester.tap(find.text('Halalala Tu chuti kr'));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('Single Click q kia???'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Double tap
+    await tester.tap(find.text('Single Click q kia???'));
+    await tester.pump(const Duration(milliseconds: 50));
+    await tester.tap(find.text('Single Click q kia???'));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('Lo ge ab double b kr dia'), findsOneWidget);
+
+    // Long press
+    await tester.longPress(find.text('Lo ge ab double b kr dia'));
+    await tester.pumpAndSettle();
+    expect(find.text('click ko chor b dy ab'), findsOneWidget);
   });
 }
+

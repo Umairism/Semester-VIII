@@ -1,6 +1,3 @@
-import 'dart:ffi';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,10 +11,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Form Demo',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      // initialRoute: '/',
+      // routes: {
+      //   '/': (context) => Scaffold(
+      //         appBar: AppBar(title: const Center(child: Text("Form Demo"))),
+      //         body: const Padding(padding: EdgeInsets.all(20), child: FormWidget()),
+      //       ),
+      //   '/second': (context) => const SecondScreen(),
+      // },
+
       home: Scaffold(
-        appBar: AppBar(title: Center(child: Text("Form Demo"))),
-        body: Padding(padding: EdgeInsets.all(20), child: FormWidget()),
+        appBar: AppBar(title: const Center(child: Text("Form Demo"))),
+        body: const Padding(padding: EdgeInsets.all(20), child: FormWidget()),
       ),
     );
   }
@@ -25,14 +33,14 @@ class MyApp extends StatelessWidget {
 
 class FormWidget extends StatefulWidget {
   const FormWidget({super.key});
+
   @override
   State<FormWidget> createState() => _FormWidgetState();
 }
 
 class _FormWidgetState extends State<FormWidget> {
-  @override
   final _formKey = GlobalKey<FormState>();
-  String _Name = "";
+  String _name = "";
   String _email = "";
   String _password = "";
 
@@ -41,11 +49,11 @@ class _FormWidgetState extends State<FormWidget> {
     return Form(
       key: _formKey,
       child: Column(
-        mainAxisAlignment: .center,
-        crossAxisAlignment: .start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               icon: Icon(Icons.person),
               hintText: "Name",
               labelText: "Enter Your Name",
@@ -56,15 +64,14 @@ class _FormWidgetState extends State<FormWidget> {
               }
               return null;
             },
-            onSaved: (value) => value != null ? _Name = value! : null,
+            onSaved: (value) => value != null ? _name = value : null,
           ),
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               icon: Icon(Icons.email),
               hintText: "Email",
               labelText: "Enter Your Email",
             ),
-
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return "Please Enter Valid Email";
@@ -77,10 +84,11 @@ class _FormWidgetState extends State<FormWidget> {
               }
               return null;
             },
-            onSaved: (value) => value != null ? _email = value! : null,
+            onSaved: (value) => value != null ? _email = value : null,
           ),
           TextFormField(
-            decoration: InputDecoration(
+            obscureText: true,
+            decoration: const InputDecoration(
               icon: Icon(Icons.password),
               hintText: "Password",
               labelText: "Enter Your Password",
@@ -91,23 +99,43 @@ class _FormWidgetState extends State<FormWidget> {
               }
               return null;
             },
-            onSaved: (value) => value != null ? _password = value! : null,
+            onSaved: (value) => value != null ? _password = value : null,
           ),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(
-                      "Form Submitted By $_Name($_email)and $_password",
-                    ),
-                    duration: Duration(seconds: 5),
+                    content: Text("Form Submitted By $_name ($_email)"),
+                    duration: const Duration(seconds: 2),
                   ),
                 );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SecondScreen(
+                      name: _name,
+                      email: _email,
+                      password: _password,
+                    ),
+                  ),
+                );
+
+                // Navigator.pushNamed(
+                //   context,
+                //   '/second',
+                //   arguments: {
+                //     'name': _name,
+                //     'email': _email,
+                //     'password': _password,
+                //   },
+                // );
               }
             },
-            child: Text("Submit"),
+            child: const Text("Submit"),
           ),
         ],
       ),
@@ -115,16 +143,53 @@ class _FormWidgetState extends State<FormWidget> {
   }
 }
 
-class FormDemo extends StatefulWidget {
-  const FormDemo({super.key});
+class SecondScreen extends StatelessWidget {
+  final String name;
+  final String email;
+  final String password;
 
-  @override
-  State<FormDemo> createState() => _FormDemoState();
-}
+  const SecondScreen({
+    super.key,
+    this.name = "",
+    this.email = "",
+    this.password = "",
+  });
 
-class _FormDemoState extends State<FormDemo> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("2nd Screen Demo"),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Welcome to the 2nd Screen!",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              if (name.isNotEmpty) ...[
+                Text("Name: $name", style: const TextStyle(fontSize: 16)),
+                const SizedBox(height: 8),
+                Text("Email: $email", style: const TextStyle(fontSize: 16)),
+                const SizedBox(height: 20),
+              ],
+              ElevatedButton(
+                onPressed: () {
+                  // Go back to the first screen
+                  Navigator.pop(context);
+                },
+                child: const Text("Go Back"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
