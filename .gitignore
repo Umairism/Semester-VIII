@@ -1,22 +1,33 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.buildlog/
-.history
-.svn/
+# ==========================================
+# General Gitignore for Semester-VIII Repository
+# ==========================================
 
-# IDE / Editor configuration
+# --- OS & System Junk ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+*.swp
+*.swo
+*.tmp
+
+# --- IDEs & Editors ---
 .idea/
 .vscode/
 *.iml
 *.ipr
 *.iws
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
 
-# Flutter / Dart build outputs & caches
+# --- Flutter / Dart / Mobile Development ---
 **/build/
 **/.dart_tool/
 **/.pub/
@@ -24,3 +35,51 @@
 **/.flutter-plugins
 **/.flutter-plugins-dependencies
 **/doc/api/
+*.apk
+*.aab
+*.ipa
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/android/.gradle/
+**/android/local.properties
+
+# --- Node.js & Web ---
+**/node_modules/
+**/dist/
+**/.next/
+**/out/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Python ---
+**/__pycache__/
+*.py[cod]
+*$py.class
+**/.venv/
+**/venv/
+**/env/
+
+# --- Java / Kotlin / C / C++ ---
+*.class
+*.jar
+*.war
+*.o
+*.obj
+*.exe
+*.out
+**/target/
+**/.gradle/
+
+# --- Environment Secrets & Sensitive Files ---
+*.env
+*.env.local
+*.env.*.local
+*.pem
+*.key
