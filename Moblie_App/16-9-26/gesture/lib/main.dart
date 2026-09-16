@@ -2,95 +2,72 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(const GestureDetectorExample());
 
-class _GestureDetectorExample extends StatelessWidget {
-  const _GestureDetectorExample({super.key});
+class GestureDetectorExample extends StatelessWidget {
+  const GestureDetectorExample({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Gesture Detector Example',
       home: Scaffold(
-        appBar: AppBar(title: Text('Gesture Detector Example')),
-        body: Center(child: _GestureWidget()),
+        appBar: AppBar(title: const Text('Gesture Detector Example')),
+        body: const Center(child: GestureWidget()),
       ),
     );
   }
 }
 
-class _GestureWidget extends StatefulWidget {
-  const _GestureWidget({super.key});
+class GestureWidget extends StatefulWidget {
+  const GestureWidget({super.key});
 
   @override
-  State<_GestureWidget> createState() => _GestureWidgetState();
+  State<GestureWidget> createState() => _GestureWidgetState();
 }
 
-class _GestureWidgetState extends State<_GestureWidget> {
-  Color color = Colors.blue;
+class _GestureWidgetState extends State<GestureWidget> {
+  Color _color = Colors.orange;
+  String _eventText = "Halalala Tu chuti kr";
 
-  String eventText = "Halalalalala kuch nahi hua tery sy";
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _color = Colors.red;
+          _eventText = "Single Click q kia???";
+        });
+      },
+      onDoubleTap: () {
+        setState(() {
+          _color = Colors.green;
+          _eventText = "Lo ge ab double b kr dia";
+        });
+      },
+      onLongPress: () {
+        setState(() {
+          _color = Colors.blue;
+          _eventText = "click ko chor b dy ab";
+        });
+      },
+      child: Container(
+        width: 200,
+        height: 200,
+        decoration: BoxDecoration(
+          color: _color,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          _eventText,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
 }
-
-void _ontap() {
-  setState(() {
-    Color color = Color.red;
-    String eventText = "Ab hua na tap shukr ha";
-  })
-}
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-//       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-//     );
-//   }
-// }
-
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key, required this.title});
-
-//   final String title;
-
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
-
-//   void _incrementCounter() {
-//     setState(() {
-//       _counter++;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: .center,
-//           children: [
-//             const Text('You have pushed the button this many times:'),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headlineMedium,
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: const Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }
